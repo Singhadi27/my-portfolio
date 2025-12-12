@@ -40,6 +40,46 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
     
     <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+  
+  <!-- Tooltip styles for social icons -->
+  <style>
+    .soial-icons a { position: relative; }
+    .soial-icons a::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 130%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      padding: 6px 8px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .15s ease, transform .15s ease;
+      z-index: 50;
+    }
+    .soial-icons a::before {
+      content: '';
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px;
+      border-style: solid;
+      border-color: rgba(0,0,0,0.85) transparent transparent transparent;
+      opacity: 0;
+      transition: opacity .15s ease;
+      z-index: 50;
+    }
+    .soial-icons a:hover::after,
+    .soial-icons a:hover::before {
+      opacity: 1;
+    }
+  </style>
+
   </head>
 
   <body>
@@ -184,20 +224,21 @@
               <ul class="soial-icons">
                 <li>
                   <a href="https://github.com/Singhadi27" target="_blank" rel="noopener noreferrer"
+                    data-tooltip="GitHub — View my projects" title="GitHub — View my projects"
                     ><i class="fa fa-github"></i
                   ></a>
                 </li>
                 <li>
-                  <a href="https://www.linkedin.com/in/adityasinghio/" target="_blank" rel="noopener noreferrer"><i class="fa fa-linkedin"></i></a>
+                  <a href="https://www.linkedin.com/in/adityasinghio/" target="_blank" rel="noopener noreferrer" data-tooltip="LinkedIn — Connect with me" title="LinkedIn — Connect with me"><i class="fa fa-linkedin"></i></a>
                 </li>
                 <li>
-                  <a href="https://codolio.com/profile/aadiitya27" target="_blank" rel="noopener noreferrer"><i class="fa fa-github-alt"></i></a>
+                  <a href="https://codolio.com/profile/aadiitya27" target="_blank" rel="noopener noreferrer" data-tooltip="Codolio — My profile" title="Codolio — My profile"><i class="fa fa-github-alt"></i></a>
                 </li>
                 <li>
-                  <a href="https://x.com/Adityassingh27" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter"></i></a>
+                  <a href="https://x.com/Adityassingh27" target="_blank" rel="noopener noreferrer" data-tooltip="X — Follow me" title="X — Follow me"><i class="fa fa-twitter"></i></a>
                 </li>
                 <li>
-                  <a href="https://drive.google.com/file/d/1kps_ahO24HQdH4E4a-xB-LQ-AEun4HGq/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="fa fa-file-text"></i></a>
+                  <a href="https://drive.google.com/file/d/1kps_ahO24HQdH4E4a-xB-LQ-AEun4HGq/view?usp=sharing" target="_blank" rel="noopener noreferrer" data-tooltip="Resume — View my resume" title="Resume — View my resume"><i class="fa fa-file-text"></i></a>
                 </li>
               </ul>
             </div>
