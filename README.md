@@ -1,1 +1,1 @@
-https://rajnayan.netlify.app/
+https://adiityasingh.netlify.app/
