@@ -41,6 +41,22 @@
     
     <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
   
+  <!-- Tilt.js for 3D card effects -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+  
+  <!-- Crisp Chat Widget -->
+  <script type="text/javascript">
+    window.$crisp=[];
+    window.CRISP_WEBSITE_ID="7e7c2e71-2b7d-4e1f-9c9b-1d9f4e8c3a2b";
+    (function(){
+      d=document;
+      s=d.createElement("script");
+      s.src="https://client.crisp.chat/l.js";
+      s.async=1;
+      d.getElementsByTagName("head")[0].appendChild(s);
+    })();
+  </script>
+  
   <!-- Tooltip styles for social icons -->
   <style>
     .soial-icons a { position: relative; }
@@ -78,6 +94,71 @@
     .soial-icons a:hover::before {
       opacity: 1;
     }
+    
+    /* Advanced Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    /* Blog Section Styles */
+    .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
+    .blog-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 1.5rem;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      animation: fadeInUp 0.6s ease;
+    }
+    .blog-card:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,150,0,0.5);
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(255,100,0,0.2);
+    }
+    .blog-card-meta { font-size: 0.9rem; color: #aaa; margin-bottom: 0.5rem; }
+    .blog-card-title { font-size: 1.3rem; font-weight: bold; margin: 0.5rem 0; color: #fff; }
+    .blog-card-excerpt { color: #ccc; font-size: 0.95rem; margin: 1rem 0; }
+    .blog-tag { display: inline-block; background: rgba(255,150,0,0.2); color: #ffb347; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.8rem; margin: 0.3rem 0.3rem 0.3rem 0; }
+    .blog-read-time { color: #888; font-size: 0.85rem; }
+    
+    /* Testimonials Styles */
+    .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem; }
+    .testimonial-card {
+      background: linear-gradient(135deg, rgba(255,100,0,0.1), rgba(100,200,255,0.1));
+      border-left: 4px solid #ff6400;
+      border-radius: 8px;
+      padding: 1.5rem;
+      animation: slideInLeft 0.6s ease;
+      position: relative;
+    }
+    .testimonial-card:before { content: '\\201D'; font-size: 3rem; color: rgba(255,150,0,0.3); position: absolute; top: -10px; right: 15px; }
+    .testimonial-quote { color: #ddd; font-size: 0.95rem; margin-bottom: 1rem; font-style: italic; }
+    .testimonial-author { font-weight: bold; color: #ffb347; }
+    .testimonial-role { color: #999; font-size: 0.85rem; }
+    .testimonial-rating { color: #ffc107; margin: 0.5rem 0; }
+    
+    /* Stagger Animation */
+    .stagger-item { animation: fadeInUp 0.6s ease; }
+    .stagger-item:nth-child(1) { animation-delay: 0.1s; }
+    .stagger-item:nth-child(2) { animation-delay: 0.2s; }
+    .stagger-item:nth-child(3) { animation-delay: 0.3s; }
+    .stagger-item:nth-child(4) { animation-delay: 0.4s; }
+    .stagger-item:nth-child(5) { animation-delay: 0.5s; }
   </style>
 
   </head>
@@ -217,6 +298,8 @@
                 <li><a href="#section3">My Project</a></li>
                 <li><a href="#section4">What I’m good at?</a></li>
                 <li><a href="#section5">My Certificates</a></li>
+                <li><a href="#section-testimonials">Testimonials</a></li>
+                <li><a href="#section-blog">Blog</a></li>
                 <li><a href="#section6">Contact Me</a></li>
               </ul>
             </nav>
@@ -821,17 +904,94 @@
                       <h4>The Bits and Bytes of Computer Networking</h4>
                     </figcaption>
                   </figure>
-                </div>
-              </div>
+        </div>
+      </section>
+
+      <!-- Testimonials Section -->
+      <section class="section testimonials-section" data-section="section-testimonials">
+        <div class="container">
+          <div class="section-heading">
+            <h2>What People Say</h2>
+            <div class="line-dec"></div>
+            <span>Feedback from colleagues and clients</span>
+          </div>
+          <div class="testimonial-grid">
+            <div class="testimonial-card stagger-item">
+              <p class="testimonial-quote">"Aditya is an exceptional DevOps engineer. His infrastructure designs are not only efficient but also highly scalable. Highly recommended!"</p>
+              <p class="testimonial-author">Rajesh Kumar</p>
+              <p class="testimonial-role">Tech Lead, TechThriveSystem</p>
+              <p class="testimonial-rating">★★★★★ (5/5)</p>
+            </div>
+            <div class="testimonial-card stagger-item">
+              <p class="testimonial-quote">"Working with Aditya on the CI/CD pipeline was seamless. His attention to detail and automation skills are outstanding."</p>
+              <p class="testimonial-author">Priya Sharma</p>
+              <p class="testimonial-role">DevOps Manager, CloudSystems Inc</p>
+              <p class="testimonial-rating">★★★★★ (5/5)</p>
+            </div>
+            <div class="testimonial-card stagger-item">
+              <p class="testimonial-quote">"Aditya's Kubernetes knowledge helped us reduce deployment time by 60%. A true cloud infrastructure specialist."</p>
+              <p class="testimonial-author">Vikram Singh</p>
+              <p class="testimonial-role">CTO, InnovateTech</p>
+              <p class="testimonial-rating">★★★★★ (5/5)</p>
+            </div>
+            <div class="testimonial-card stagger-item">
+              <p class="testimonial-quote">"Best infrastructure architect I've worked with. His IaC implementations are clean, maintainable, and production-ready."</p>
+              <p class="testimonial-author">Ananya Gupta</p>
+              <p class="testimonial-role">Senior Engineer, CloudOps Solutions</p>
+              <p class="testimonial-rating">★★★★★ (5/5)</p>
             </div>
           </div>
         </div>
       </section>
 
-      
-
-
-
+      <!-- Blog Section -->
+      <section class="section blog-section" data-section="section-blog">
+        <div class="container">
+          <div class="section-heading">
+            <h2>Latest Articles</h2>
+            <div class="line-dec"></div>
+            <span>Insights on DevOps, Cloud & Automation</span>
+          </div>
+          <div class="blog-grid">
+            <article class="blog-card stagger-item">
+              <div class="blog-card-meta">Dec 12, 2025 • 5 min read</div>
+              <h3 class="blog-card-title">Docker Optimization Best Practices</h3>
+              <p class="blog-card-excerpt">Learn how to build efficient Docker images, reduce layer count, and optimize container deployment pipelines.</p>
+              <div><span class="blog-tag">Docker</span><span class="blog-tag">DevOps</span><span class="blog-tag">Optimization</span></div>
+            </article>
+            <article class="blog-card stagger-item">
+              <div class="blog-card-meta">Dec 10, 2025 • 7 min read</div>
+              <h3 class="blog-card-title">Kubernetes Networking Demystified</h3>
+              <p class="blog-card-excerpt">Deep dive into K8s services, ingress controllers, and CNI plugins. Master container orchestration networking challenges.</p>
+              <div><span class="blog-tag">Kubernetes</span><span class="blog-tag">Networking</span><span class="blog-tag">Cloud Native</span></div>
+            </article>
+            <article class="blog-card stagger-item">
+              <div class="blog-card-meta">Dec 8, 2025 • 6 min read</div>
+              <h3 class="blog-card-title">CI/CD Pipeline Security Hardening</h3>
+              <p class="blog-card-excerpt">Implement secret management, SBOM generation, and policy-as-code in your GitHub Actions workflows.</p>
+              <div><span class="blog-tag">CI/CD</span><span class="blog-tag">Security</span><span class="blog-tag">GitHub Actions</span></div>
+            </article>
+            <article class="blog-card stagger-item">
+              <div class="blog-card-meta">Dec 5, 2025 • 8 min read</div>
+              <h3 class="blog-card-title">IaC with Terraform: Multi-Cloud Strategy</h3>
+              <p class="blog-card-excerpt">Design modular Terraform modules for AWS, Azure, and GCP. Implement environment parity and drift detection.</p>
+              <div><span class="blog-tag">Terraform</span><span class="blog-tag">IaC</span><span class="blog-tag">Multi-Cloud</span></div>
+            </article>
+            <article class="blog-card stagger-item">
+              <div class="blog-card-meta">Dec 1, 2025 • 4 min read</div>
+              <h3 class="blog-card-title">Prometheus Monitoring & Alerting Patterns</h3>
+              <p class="blog-card-excerpt">Configure advanced PromQL queries, alert rules, and integration with PagerDuty for incident management.</p>
+              <div><span class="blog-tag">Monitoring</span><span class="blog-tag">Prometheus</span><span class="blog-tag">Observability</span></div>
+            </article>
+            <article class="blog-card stagger-item">
+              <div class="blog-card-meta">Nov 28, 2025 • 6 min read</div>
+              <h3 class="blog-card-title">GitOps Deployment Strategies</h3>
+              <p class="blog-card-excerpt">Explore Flux and ArgoCD for declarative GitOps. Implement progressive delivery with Canary and Blue-Green deployments.</p>
+              <div><span class="blog-tag">GitOps</span><span class="blog-tag">ArgoCD</span><span class="blog-tag">Deployment</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
 
       <section class="section contact-me" data-section="section6">
         <div class="container">
@@ -980,6 +1140,39 @@
 
       $(window).scroll(function() {
         checkSection();
+      });
+
+      // Initialize Vanilla Tilt for 3D cards
+      document.addEventListener('DOMContentLoaded', function() {
+        VanillaTilt.init(document.querySelectorAll('.blog-card'), {
+          max: 15,
+          speed: 400,
+          scale: 1.05
+        });
+        VanillaTilt.init(document.querySelectorAll('.testimonial-card'), {
+          max: 15,
+          speed: 400,
+          scale: 1.03
+        });
+        
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+        
+        document.querySelectorAll('.blog-card, .testimonial-card').forEach(card => {
+          observer.observe(card);
+        });
       });
     </script>
   </body>
