@@ -44,18 +44,6 @@
   <!-- Tilt.js for 3D card effects -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
   
-  <!-- Crisp Chat Widget -->
-  <script type="text/javascript">
-    window.$crisp=[];
-    window.CRISP_WEBSITE_ID="7e7c2e71-2b7d-4e1f-9c9b-1d9f4e8c3a2b";
-    (function(){
-      d=document;
-      s=d.createElement("script");
-      s.src="https://client.crisp.chat/l.js";
-      s.async=1;
-      d.getElementsByTagName("head")[0].appendChild(s);
-    })();
-  </script>
   
   <!-- Tooltip styles for social icons -->
   <style>
@@ -123,6 +111,7 @@
       backdrop-filter: blur(10px);
       transition: all 0.3s ease;
       animation: fadeInUp 0.6s ease;
+      cursor: pointer;
     }
     .blog-card:hover {
       background: rgba(255,255,255,0.1);
@@ -136,21 +125,221 @@
     .blog-tag { display: inline-block; background: rgba(255,150,0,0.2); color: #ffb347; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.8rem; margin: 0.3rem 0.3rem 0.3rem 0; }
     .blog-read-time { color: #888; font-size: 0.85rem; }
     
-    /* Testimonials Styles */
-    .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem; }
-    .testimonial-card {
-      background: linear-gradient(135deg, rgba(255,100,0,0.1), rgba(100,200,255,0.1));
-      border-left: 4px solid #ff6400;
-      border-radius: 8px;
-      padding: 1.5rem;
-      animation: slideInLeft 0.6s ease;
-      position: relative;
+    /* Blog Modal Styles */
+    .blog-modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+      animation: fadeIn 0.3s ease;
+      overflow: hidden;
     }
-    .testimonial-card:before { content: '\\201D'; font-size: 3rem; color: rgba(255,150,0,0.3); position: absolute; top: -10px; right: 15px; }
-    .testimonial-quote { color: #ddd; font-size: 0.95rem; margin-bottom: 1rem; font-style: italic; }
-    .testimonial-author { font-weight: bold; color: #ffb347; }
-    .testimonial-role { color: #999; font-size: 0.85rem; }
-    .testimonial-rating { color: #ffc107; margin: 0.5rem 0; }
+    
+    .blog-modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .blog-modal-content {
+      background: linear-gradient(135deg, rgba(27,39,53,0.98), rgba(9,10,15,0.98));
+      border: 1px solid rgba(255,150,0,0.3);
+      border-radius: 15px;
+      width: 90%;
+      max-width: 900px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(255,100,0,0.3);
+      position: relative;
+      animation: slideUp 0.4s ease;
+    }
+    
+    .blog-modal-header {
+      background: rgba(27,39,53,0.99);
+      padding: 1.5rem 2rem;
+      border-bottom: 2px solid rgba(255,150,0,0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      gap: 1rem;
+    }
+    
+    .blog-modal-title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #fff;
+      margin: 0;
+      margin-right: 1rem;
+    }
+    
+    .blog-modal-meta {
+      color: #aaa;
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+    }
+    
+    .blog-modal-close {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 2.5rem;
+      cursor: pointer;
+      padding: 0;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    
+    .blog-modal-close:hover {
+      color: #ff9900;
+      transform: rotate(90deg);
+    }
+    
+    .blog-modal-body {
+      padding: 2rem;
+      color: #ddd;
+      line-height: 1.8;
+      font-size: 1rem;
+      padding-bottom: 3rem;
+    }
+    
+    .blog-modal-body h3 {
+      color: #ffb347;
+      font-size: 1.4rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.8rem;
+    }
+    
+    .blog-modal-body h4 {
+      color: #ff9900;
+      font-size: 1.2rem;
+      margin-top: 1.2rem;
+      margin-bottom: 0.6rem;
+    }
+    
+    .blog-modal-body p {
+      margin-bottom: 1rem;
+      text-align: justify;
+    }
+    
+    .blog-modal-body ul, .blog-modal-body ol {
+      margin-left: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .blog-modal-body li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .blog-modal-body code {
+      background: rgba(0,0,0,0.4);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      color: #ffb347;
+    }
+    
+    .theme-toggle {
+      background: rgba(255,150,0,0.2);
+      border: 1px solid rgba(255,150,0,0.4);
+      color: #ffb347;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    
+    .theme-toggle:hover {
+      background: rgba(255,150,0,0.4);
+      color: #fff;
+    }
+    
+    /* Light Mode Styles */
+    .blog-modal.light-mode {
+      background: rgba(255,255,255,0.95);
+    }
+    
+    .blog-modal.light-mode .blog-modal-content {
+      background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(245,245,250,0.98));
+      border-color: rgba(255,150,0,0.5);
+    }
+    
+    .blog-modal.light-mode .blog-modal-header {
+      background: rgba(255,255,255,0.99);
+      border-color: rgba(255,150,0,0.5);
+    }
+    
+    .blog-modal.light-mode .blog-modal-title {
+      color: #1a1a1a;
+    }
+    
+    .blog-modal.light-mode .blog-modal-meta {
+      color: #666;
+    }
+    
+    .blog-modal.light-mode .blog-modal-close {
+      color: #333;
+    }
+    
+    .blog-modal.light-mode .blog-modal-close:hover {
+      color: #ff9900;
+    }
+    
+    .blog-modal.light-mode .blog-modal-body {
+      color: #1a1a1a;
+    }
+    
+    .blog-modal.light-mode .blog-modal-body h3 {
+      color: #d97706;
+    }
+    
+    .blog-modal.light-mode .blog-modal-body h4 {
+      color: #ff9900;
+    }
+    
+    .blog-modal.light-mode .blog-modal-body code {
+      background: rgba(0,0,0,0.08);
+      color: #d97706;
+    }
+    
+    .blog-modal.light-mode .theme-toggle {
+      background: rgba(255,150,0,0.15);
+      border-color: rgba(255,150,0,0.5);
+      color: #d97706;
+    }
+    
+    .blog-modal.light-mode .theme-toggle:hover {
+      background: rgba(255,150,0,0.3);
+      color: #ff9900;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    
     
     /* Stagger Animation */
     .stagger-item { animation: fadeInUp 0.6s ease; }
@@ -298,7 +487,6 @@
                 <li><a href="#section3">My Project</a></li>
                 <li><a href="#section4">What I’m good at?</a></li>
                 <li><a href="#section5">My Certificates</a></li>
-                <li><a href="#section-testimonials">Testimonials</a></li>
                 <li><a href="#section-blog">Blog</a></li>
                 <li><a href="#section6">Contact Me</a></li>
               </ul>
@@ -907,43 +1095,6 @@
         </div>
       </section>
 
-      <!-- Testimonials Section -->
-      <section class="section testimonials-section" data-section="section-testimonials">
-        <div class="container">
-          <div class="section-heading">
-            <h2>What People Say</h2>
-            <div class="line-dec"></div>
-            <span>Feedback from colleagues and clients</span>
-          </div>
-          <div class="testimonial-grid">
-            <div class="testimonial-card stagger-item">
-              <p class="testimonial-quote">"Aditya is an exceptional DevOps engineer. His infrastructure designs are not only efficient but also highly scalable. Highly recommended!"</p>
-              <p class="testimonial-author">Rajesh Kumar</p>
-              <p class="testimonial-role">Tech Lead, TechThriveSystem</p>
-              <p class="testimonial-rating">★★★★★ (5/5)</p>
-            </div>
-            <div class="testimonial-card stagger-item">
-              <p class="testimonial-quote">"Working with Aditya on the CI/CD pipeline was seamless. His attention to detail and automation skills are outstanding."</p>
-              <p class="testimonial-author">Priya Sharma</p>
-              <p class="testimonial-role">DevOps Manager, CloudSystems Inc</p>
-              <p class="testimonial-rating">★★★★★ (5/5)</p>
-            </div>
-            <div class="testimonial-card stagger-item">
-              <p class="testimonial-quote">"Aditya's Kubernetes knowledge helped us reduce deployment time by 60%. A true cloud infrastructure specialist."</p>
-              <p class="testimonial-author">Vikram Singh</p>
-              <p class="testimonial-role">CTO, InnovateTech</p>
-              <p class="testimonial-rating">★★★★★ (5/5)</p>
-            </div>
-            <div class="testimonial-card stagger-item">
-              <p class="testimonial-quote">"Best infrastructure architect I've worked with. His IaC implementations are clean, maintainable, and production-ready."</p>
-              <p class="testimonial-author">Ananya Gupta</p>
-              <p class="testimonial-role">Senior Engineer, CloudOps Solutions</p>
-              <p class="testimonial-rating">★★★★★ (5/5)</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- Blog Section -->
       <section class="section blog-section" data-section="section-blog">
         <div class="container">
@@ -953,37 +1104,37 @@
             <span>Insights on DevOps, Cloud & Automation</span>
           </div>
           <div class="blog-grid">
-            <article class="blog-card stagger-item">
+            <article class="blog-card stagger-item" data-blog-id="1">
               <div class="blog-card-meta">Dec 12, 2025 • 5 min read</div>
               <h3 class="blog-card-title">Docker Optimization Best Practices</h3>
               <p class="blog-card-excerpt">Learn how to build efficient Docker images, reduce layer count, and optimize container deployment pipelines.</p>
               <div><span class="blog-tag">Docker</span><span class="blog-tag">DevOps</span><span class="blog-tag">Optimization</span></div>
             </article>
-            <article class="blog-card stagger-item">
+            <article class="blog-card stagger-item" data-blog-id="2">
               <div class="blog-card-meta">Dec 10, 2025 • 7 min read</div>
               <h3 class="blog-card-title">Kubernetes Networking Demystified</h3>
               <p class="blog-card-excerpt">Deep dive into K8s services, ingress controllers, and CNI plugins. Master container orchestration networking challenges.</p>
               <div><span class="blog-tag">Kubernetes</span><span class="blog-tag">Networking</span><span class="blog-tag">Cloud Native</span></div>
             </article>
-            <article class="blog-card stagger-item">
+            <article class="blog-card stagger-item" data-blog-id="3">
               <div class="blog-card-meta">Dec 8, 2025 • 6 min read</div>
               <h3 class="blog-card-title">CI/CD Pipeline Security Hardening</h3>
               <p class="blog-card-excerpt">Implement secret management, SBOM generation, and policy-as-code in your GitHub Actions workflows.</p>
               <div><span class="blog-tag">CI/CD</span><span class="blog-tag">Security</span><span class="blog-tag">GitHub Actions</span></div>
             </article>
-            <article class="blog-card stagger-item">
+            <article class="blog-card stagger-item" data-blog-id="4">
               <div class="blog-card-meta">Dec 5, 2025 • 8 min read</div>
               <h3 class="blog-card-title">IaC with Terraform: Multi-Cloud Strategy</h3>
               <p class="blog-card-excerpt">Design modular Terraform modules for AWS, Azure, and GCP. Implement environment parity and drift detection.</p>
               <div><span class="blog-tag">Terraform</span><span class="blog-tag">IaC</span><span class="blog-tag">Multi-Cloud</span></div>
             </article>
-            <article class="blog-card stagger-item">
+            <article class="blog-card stagger-item" data-blog-id="5">
               <div class="blog-card-meta">Dec 1, 2025 • 4 min read</div>
               <h3 class="blog-card-title">Prometheus Monitoring & Alerting Patterns</h3>
               <p class="blog-card-excerpt">Configure advanced PromQL queries, alert rules, and integration with PagerDuty for incident management.</p>
               <div><span class="blog-tag">Monitoring</span><span class="blog-tag">Prometheus</span><span class="blog-tag">Observability</span></div>
             </article>
-            <article class="blog-card stagger-item">
+            <article class="blog-card stagger-item" data-blog-id="6">
               <div class="blog-card-meta">Nov 28, 2025 • 6 min read</div>
               <h3 class="blog-card-title">GitOps Deployment Strategies</h3>
               <p class="blog-card-excerpt">Explore Flux and ArgoCD for declarative GitOps. Implement progressive delivery with Canary and Blue-Green deployments.</p>
@@ -992,6 +1143,25 @@
           </div>
         </div>
       </section>
+
+      <!-- Blog Modal -->
+      <div id="blog-modal" class="blog-modal">
+        <div class="blog-modal-content">
+          <div class="blog-modal-header">
+            <div>
+              <h2 class="blog-modal-title" id="modal-title">Article Title</h2>
+              <div class="blog-modal-meta" id="modal-meta">Meta information</div>
+            </div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+              <button class="theme-toggle" onclick="toggleTheme()">🌙 Light Mode</button>
+              <button class="blog-modal-close" onclick="closeBlogModal()">&times;</button>
+            </div>
+          </div>
+          <div class="blog-modal-body" id="modal-body">
+            <!-- Content will be inserted here -->
+          </div>
+        </div>
+      </div>
 
       <section class="section contact-me" data-section="section6">
         <div class="container">
@@ -1142,8 +1312,242 @@
         checkSection();
       });
 
+      // Blog Article Content Data
+      const blogArticles = {
+        1: {
+          title: "Docker Optimization Best Practices",
+          meta: "Dec 12, 2025 • 5 min read",
+          content: `
+            <h3>Building Efficient Container Images</h3>
+            <p>Docker has become the de facto standard for containerization, but building efficient images requires careful attention to several key principles. In this comprehensive guide, we'll explore the best practices that can dramatically improve your containerized application performance and deployment pipeline.</p>
+            
+            <h4>1. Use Multi-Stage Builds</h4>
+            <p>Multi-stage builds are one of the most powerful features in Docker for optimizing image size. By leveraging multiple FROM statements in your Dockerfile, you can separate build dependencies from runtime dependencies.</p>
+            
+            <h4>2. Minimize Layer Count</h4>
+            <p>Each instruction in your Dockerfile creates a new layer. Combine related commands using && to reduce the number of layers and leverage Docker's layer caching effectively.</p>
+            
+            <h4>3. Leverage Layer Caching</h4>
+            <p>Docker caches layers for faster rebuilds. Order your Dockerfile instructions strategically—place commands that change frequently (like COPY) after commands that rarely change (like package installation).</p>
+            
+            <h4>4. Choose Lightweight Base Images</h4>
+            <p>Alpine Linux images are significantly smaller than full distributions. A Node.js image on Alpine is roughly 150MB versus 900MB+ on Debian.</p>
+            
+            <h4>5. Clean Up After Installation</h4>
+            <p>Remove package manager caches after installation to reduce image size. In Alpine, combine apk add with cache cleanup in a single layer for efficiency.</p>
+            
+            <h3>Production Deployment Patterns</h3>
+            <p>Implementing these optimization techniques will reduce build times, deployment times, and resource consumption—critical factors for scalable DevOps practices. Test thoroughly in staging environments before rolling out to production.</p>
+          `
+        },
+        2: {
+          title: "Kubernetes Networking Demystified",
+          meta: "Dec 10, 2025 • 7 min read",
+          content: `
+            <h3>Understanding Kubernetes Network Fundamentals</h3>
+            <p>Kubernetes networking can seem overwhelming at first, but understanding the core concepts makes advanced networking patterns much clearer. This article breaks down service discovery, load balancing, and ingress controllers.</p>
+            
+            <h4>The Kubernetes Network Model</h4>
+            <p>Kubernetes imposes fundamental requirements on any networking implementation:</p>
+            <ul>
+              <li>Pods can communicate with all other pods on any node without NAT</li>
+              <li>Agents on a node (kubelet, system daemons) can communicate with all pods on that node</li>
+              <li>Pods in the host network of a node can communicate with all pods on all nodes without NAT</li>
+            </ul>
+            
+            <h4>Services: Stable Endpoints</h4>
+            <p>Services provide a stable IP address and DNS name for accessing pods. There are four primary types:</p>
+            <p><strong>ClusterIP (default):</strong> Accessible only within the cluster.</p>
+            <p><strong>NodePort:</strong> Exposes the service on a static port of each node's IP.</p>
+            <p><strong>LoadBalancer:</strong> Provisions an external load balancer (cloud provider specific).</p>
+            <p><strong>ExternalName:</strong> Maps to an external DNS name via CNAME.</p>
+            
+            <h4>Ingress Controllers</h4>
+            <p>Ingress resources define rules for routing external HTTP/HTTPS traffic to services. Ingress controllers (like NGINX, Traefik, or AWS ALB Controller) implement these rules.</p>
+            
+            <h4>Container Network Interfaces (CNI)</h4>
+            <p>CNI plugins implement the network model: Flannel, Calico, Weave, and AWS VPC CNI are popular choices. Each has different trade-offs around performance, features, and operational complexity.</p>
+            
+            <h3>Network Policies for Security</h3>
+            <p>NetworkPolicy resources define how pods can communicate with each other and external endpoints. Default-deny policies enforce zero-trust networking principles in your cluster.</p>
+          `
+        },
+        3: {
+          title: "CI/CD Pipeline Security Hardening",
+          meta: "Dec 8, 2025 • 6 min read",
+          content: `
+            <h3>Building Secure Deployment Pipelines</h3>
+            <p>Security must be embedded throughout your CI/CD pipeline, not added as an afterthought. This guide covers essential practices for GitHub Actions workflows and other CI/CD platforms.</p>
+            
+            <h4>Secret Management</h4>
+            <p>Never commit secrets to version control. Use GitHub Secrets for sensitive data like API keys and access tokens. Reference them safely in your workflow.</p>
+            
+            <h4>SBOM Generation</h4>
+            <p>Software Bill of Materials (SBOM) documents all dependencies in your application. Tools like Syft generate SBOMs automatically in your pipeline for better supply chain security.</p>
+            
+            <h4>Dependency Scanning</h4>
+            <p>Scan dependencies for known vulnerabilities using tools like:</p>
+            <ul>
+              <li>GitHub Dependabot</li>
+              <li>Snyk</li>
+              <li>OWASP Dependency-Check</li>
+            </ul>
+            
+            <h4>Container Image Scanning</h4>
+            <p>Scan Docker images for vulnerabilities before deployment. Trivy is a popular open-source scanner that integrates well with CI/CD pipelines.</p>
+            
+            <h4>Code Quality & SAST</h4>
+            <p>Static Application Security Testing identifies vulnerabilities in source code. Integrate tools like SonarQube or GitHub CodeQL into your pipeline for comprehensive security analysis.</p>
+            
+            <h3>Compliance & Audit Trails</h3>
+            <p>Document all deployments with immutable audit trails. Sign artifacts and maintain deployment records for compliance requirements.</p>
+          `
+        },
+        4: {
+          title: "IaC with Terraform: Multi-Cloud Strategy",
+          meta: "Dec 5, 2025 • 8 min read",
+          content: `
+            <h3>Infrastructure as Code for Multi-Cloud Deployments</h3>
+            <p>Terraform enables you to define infrastructure in version-controlled code. This guide covers designing modular Terraform for AWS, Azure, and GCP while maintaining consistency across clouds.</p>
+            
+            <h4>Modular Terraform Architecture</h4>
+            <p>Organize Terraform into reusable modules for compute, networking, storage, and databases. This promotes code reuse and consistency across your infrastructure.</p>
+            
+            <h4>Provider Configuration</h4>
+            <p>Terraform supports multiple providers simultaneously. Configure provider aliases for multi-cloud deployments to manage resources across different cloud platforms.</p>
+            
+            <h4>Environment Parity</h4>
+            <p>Use workspaces or separate state files to maintain identical infrastructure across development, staging, and production environments. This ensures consistent behavior across all environments.</p>
+            
+            <h4>State Management</h4>
+            <p>Store state remotely (S3, Azure Storage, or Terraform Cloud) with encryption and locking enabled. Remote state prevents accidental local modifications and enables team collaboration.</p>
+            
+            <h4>Drift Detection</h4>
+            <p>Infrastructure drift occurs when manual changes deviate from Terraform configuration. Regular terraform plan runs detect drift before it causes production issues.</p>
+            
+            <h3>Testing & Validation</h3>
+            <p>Use Terraform validate, tflint, and tools like Terratest to validate infrastructure code before deployment. Implement policy-as-code using OPA/Rego for governance.</p>
+          `
+        },
+        5: {
+          title: "Prometheus Monitoring & Alerting Patterns",
+          meta: "Dec 1, 2025 • 4 min read",
+          content: `
+            <h3>Advanced Monitoring with Prometheus</h3>
+            <p>Prometheus is the foundation of modern observability stacks. This guide covers advanced PromQL queries, alert rule design, and integration with incident management systems.</p>
+            
+            <h4>PromQL Query Patterns</h4>
+            <p>PromQL (Prometheus Query Language) is powerful but requires practice. Common patterns include:</p>
+            <p><strong>Rate of errors:</strong> Query recent error rates to identify issues</p>
+            <p><strong>95th percentile latency:</strong> Measure performance at scale</p>
+            <p><strong>Memory usage trends:</strong> Track resource consumption over time</p>
+            
+            <h4>Alert Rule Design</h4>
+            <p>Well-designed alerts are actionable and reduce alert fatigue. Use these principles:</p>
+            <ul>
+              <li>Set thresholds based on SLA/SLO requirements</li>
+              <li>Use for clauses to avoid flapping alerts</li>
+              <li>Include runbook links in alert annotations</li>
+              <li>Group related alerts using labels</li>
+            </ul>
+            
+            <h4>Integration with PagerDuty</h4>
+            <p>Route critical alerts to PagerDuty for incident response. Configure AlertManager with PagerDuty integration for seamless incident management.</p>
+            
+            <h4>Recording Rules</h4>
+            <p>Pre-compute complex queries using recording rules to improve performance and simplify alerting across your infrastructure.</p>
+            
+            <h3>Long-term Storage & Analysis</h3>
+            <p>Prometheus stores data for limited periods. Use remote storage solutions (Thanos, Mimir) for long-term retention and cross-cluster queries.</p>
+          `
+        },
+        6: {
+          title: "GitOps Deployment Strategies",
+          meta: "Nov 28, 2025 • 6 min read",
+          content: `
+            <h3>Declarative Infrastructure with GitOps</h3>
+            <p>GitOps treats your Git repository as the single source of truth for infrastructure and application state. This guide covers Flux and ArgoCD, the two leading GitOps tools.</p>
+            
+            <h4>GitOps Principles</h4>
+            <p>The GitOps methodology includes:</p>
+            <ul>
+              <li>Declarative description of desired state in Git</li>
+              <li>Git as the single source of truth</li>
+              <li>Automated reconciliation of actual vs. desired state</li>
+              <li>Full audit trail through Git history</li>
+            </ul>
+            
+            <h4>Flux Architecture</h4>
+            <p>Flux monitors Git repositories and automatically syncs changes to your cluster. Key components include source controller, kustomization controller, and notification controller.</p>
+            
+            <h4>ArgoCD Architecture</h4>
+            <p>ArgoCD takes a pull-based approach with excellent UI and multi-tenancy support for managing Kubernetes clusters at scale.</p>
+            
+            <h4>Progressive Delivery: Canary Deployments</h4>
+            <p>Canary deployments gradually shift traffic to new versions. Flagger automates this with Istio or Linkerd for safer, controlled rollouts.</p>
+            
+            <h4>Blue-Green Deployments</h4>
+            <p>Run two identical production environments and switch traffic between them. This provides instant rollback capability but requires double the resources.</p>
+            
+            <h3>Monitoring & Rollback</h3>
+            <p>Monitor deployment health metrics and automatically rollback on failure. Both Flux and ArgoCD support health checks and automated rollback policies.</p>
+          `
+        }
+      };
+
+      // Open Blog Modal
+      function openBlogModal(blogId) {
+        const article = blogArticles[blogId];
+        if (!article) return;
+        
+        document.getElementById('modal-title').textContent = article.title;
+        document.getElementById('modal-meta').textContent = article.meta;
+        document.getElementById('modal-body').innerHTML = article.content;
+        
+        const modal = document.getElementById('blog-modal');
+        modal.classList.add('active');
+        modal.classList.remove('light-mode');
+        document.body.style.overflow = 'hidden';
+      }
+
+      // Close Blog Modal
+      function closeBlogModal() {
+        const modal = document.getElementById('blog-modal');
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
+
+      // Toggle Theme (Dark/Light Mode)
+      function toggleTheme() {
+        const modal = document.getElementById('blog-modal');
+        const button = document.querySelector('.theme-toggle');
+        
+        if (modal.classList.contains('light-mode')) {
+          modal.classList.remove('light-mode');
+          button.textContent = '🌙 Light Mode';
+        } else {
+          modal.classList.add('light-mode');
+          button.textContent = '🌒 Dark Mode';
+        }
+      }
+
       // Initialize Vanilla Tilt for 3D cards
       document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('blog-modal');
+        modal.addEventListener('click', function(e) {
+          if (e.target === modal) {
+            closeBlogModal();
+          }
+        });
+
+        // Add click event listeners to all blog cards
+        document.querySelectorAll('.blog-card').forEach(card => {
+          card.addEventListener('click', function() {
+            const blogId = this.getAttribute('data-blog-id');
+            openBlogModal(blogId);
+          });
+        });
+
         VanillaTilt.init(document.querySelectorAll('.blog-card'), {
           max: 15,
           speed: 400,
